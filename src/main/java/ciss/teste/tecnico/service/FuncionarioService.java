@@ -27,7 +27,10 @@ public class FuncionarioService {
     }
 
     public void excluiFuncionario(Long id) {
-        funcionarioRepository.delete(getFuncionarioById(id).get());
+        Optional<Funcionario> optionalFuncionario = getFuncionarioById(id);
+        verificaSeExisteFuncionario(optionalFuncionario);
+
+        funcionarioRepository.delete(optionalFuncionario.get());
     }
 
     public Funcionario atualizaFuncionario(@Valid DadosFuncionario dados) {
@@ -51,15 +54,9 @@ public class FuncionarioService {
     }
 
     private void atualizaDados(DadosFuncionario dados, Optional<Funcionario> funcionario) {
-        if (dados.nome() != null) {
-            funcionario.get().setNome(dados.nome());
-        }
-        if (dados.sobreNome() != null) {
-            funcionario.get().setSobreNome(dados.sobreNome());
-        }
-        if (dados.email() != null) {
-            funcionario.get().setEmail(dados.email());
-        }
+        funcionario.get().setNome(dados.nome());
+        funcionario.get().setSobreNome(dados.sobreNome());
+        funcionario.get().setEmail(dados.email());
         funcionario.get().setNumeroPIS(Long.parseLong(dados.numeroPIS()));
     }
 }
