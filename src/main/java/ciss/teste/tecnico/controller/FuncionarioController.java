@@ -1,6 +1,6 @@
 package ciss.teste.tecnico.controller;
 
-import ciss.teste.dto.DadosFuncionario;
+import ciss.teste.tecnico.dto.DadosFuncionario;
 import ciss.teste.tecnico.model.Funcionario;
 import ciss.teste.tecnico.service.FuncionarioService;
 import jakarta.transaction.Transactional;

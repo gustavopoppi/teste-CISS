@@ -1,6 +1,6 @@
 package ciss.teste.tecnico.model;
 
-import ciss.teste.dto.DadosFuncionario;
+import ciss.teste.tecnico.dto.DadosFuncionario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

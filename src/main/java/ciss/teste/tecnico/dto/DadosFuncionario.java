@@ -1,4 +1,4 @@
-package ciss.teste.dto;
+package ciss.teste.tecnico.dto;
 
 import jakarta.validation.constraints.*;
 

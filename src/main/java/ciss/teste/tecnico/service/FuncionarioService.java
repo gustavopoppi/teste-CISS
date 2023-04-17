@@ -1,6 +1,6 @@
 package ciss.teste.tecnico.service;
 
-import ciss.teste.dto.DadosFuncionario;
+import ciss.teste.tecnico.dto.DadosFuncionario;
 import ciss.teste.tecnico.model.Funcionario;
 import ciss.teste.tecnico.repository.FuncionarioRepository;
 import jakarta.validation.Valid;
