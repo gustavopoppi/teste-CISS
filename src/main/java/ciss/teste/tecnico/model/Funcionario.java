@@ -1,5 +1,6 @@
 package ciss.teste.tecnico.model;
 
+import ciss.teste.dto.DadosFuncionario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,4 +24,11 @@ public class Funcionario {
 
     @Column(name = "numero_pis")
     private long numeroPIS;
+
+    public Funcionario(DadosFuncionario dados) {
+        this.nome = dados.nome();
+        this.sobreNome = dados.sobreNome();
+        this.email = dados.email();
+        this.numeroPIS = Long.parseLong(dados.numeroPIS());
+    }
 }
