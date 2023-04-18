@@ -20,14 +20,19 @@ public class FuncionarioController {
     FuncionarioService funcionarioService;
 
     @GetMapping
-    public ResponseEntity listaFuncionarios(){
+    public ResponseEntity<List<Funcionario>> listaTodosFuncionarios(){
         List<Funcionario> funcionarios = funcionarioService.listaFuncionarios();
         return ResponseEntity.ok(funcionarios);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Funcionario> detalhaFuncionario(@PathVariable Long id){
+        return ResponseEntity.ok(funcionarioService.detalhaFuncionario(id));
+    }
+
     @PostMapping
     @Transactional
-    public ResponseEntity insereFuncionario(@RequestBody @Valid DadosFuncionario dados, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<Funcionario> insereFuncionario(@RequestBody @Valid DadosFuncionario dados, UriComponentsBuilder uriBuilder){
         Funcionario funcionario = funcionarioService.insereFuncionario(dados);
 
         var uri = uriBuilder.path("/funcionarios/{id}").buildAndExpand(funcionario.getId()).toUri();
@@ -36,14 +41,14 @@ public class FuncionarioController {
 
     @DeleteMapping("{id}")
     @Transactional
-    public ResponseEntity excluiFuncionario(@PathVariable Long id){
+    public ResponseEntity<?> excluiFuncionario(@PathVariable Long id){
         funcionarioService.excluiFuncionario(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizaFuncionario(@RequestBody @Valid DadosFuncionario dados){
+    public ResponseEntity<Funcionario> atualizaFuncionario(@RequestBody @Valid DadosFuncionario dados){
         Funcionario funcionario = funcionarioService.atualizaFuncionario(dados);
         return ResponseEntity.ok(funcionario);
     }

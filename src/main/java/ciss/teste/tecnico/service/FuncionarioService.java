@@ -20,6 +20,10 @@ public class FuncionarioService {
         return funcionarioRepository.findAll();
     }
 
+    public Funcionario detalhaFuncionario(Long id) {
+        return retornaFuncionarioSeExistir(id).get();
+    }
+
     public Funcionario insereFuncionario(DadosFuncionario dados) {
         Funcionario funcionario = new Funcionario(dados);
         funcionarioRepository.save(funcionario);
@@ -27,19 +31,12 @@ public class FuncionarioService {
     }
 
     public void excluiFuncionario(Long id) {
-        Optional<Funcionario> optionalFuncionario = getFuncionarioById(id);
-        verificaSeExisteFuncionario(optionalFuncionario);
-
-        funcionarioRepository.delete(optionalFuncionario.get());
+        funcionarioRepository.delete(retornaFuncionarioSeExistir(id).get());
     }
 
     public Funcionario atualizaFuncionario(@Valid DadosFuncionario dados) {
-        Optional<Funcionario> funcionario = getFuncionarioById(dados.id());
-
-        verificaSeExisteFuncionario(funcionario);
-        atualizaDados(dados, funcionario);
-        funcionarioRepository.save(funcionario.get());
-
+        Optional<Funcionario> funcionario = retornaFuncionarioSeExistir(dados.id());
+        atualizaDados(dados, funcionario.get());
         return funcionario.get();
     }
 
@@ -53,10 +50,18 @@ public class FuncionarioService {
         }
     }
 
-    private void atualizaDados(DadosFuncionario dados, Optional<Funcionario> funcionario) {
-        funcionario.get().setNome(dados.nome());
-        funcionario.get().setSobreNome(dados.sobreNome());
-        funcionario.get().setEmail(dados.email());
-        funcionario.get().setNumeroPIS(Long.parseLong(dados.numeroPIS()));
+    private void atualizaDados(DadosFuncionario dados, Funcionario funcionario) {
+        funcionario.setNome(dados.nome());
+        funcionario.setSobreNome(dados.sobreNome());
+        funcionario.setEmail(dados.email());
+        funcionario.setNumeroPIS(Long.parseLong(dados.numeroPIS()));
+
+        funcionarioRepository.save(funcionario);
+    }
+
+    private Optional<Funcionario> retornaFuncionarioSeExistir(Long id) {
+        Optional<Funcionario> optionalFuncionario = getFuncionarioById(id);
+        verificaSeExisteFuncionario(optionalFuncionario);
+        return optionalFuncionario;
     }
 }
