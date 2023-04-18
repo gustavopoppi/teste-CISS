@@ -21,7 +21,7 @@ public class FuncionarioService {
     }
 
     public Funcionario detalhaFuncionario(Long id) {
-        return retornaFuncionarioSeExistir(id).get();
+        return retornaFuncionarioSeExistir(id);
     }
 
     public Funcionario insereFuncionario(DadosFuncionario dados) {
@@ -31,37 +31,31 @@ public class FuncionarioService {
     }
 
     public void excluiFuncionario(Long id) {
-        funcionarioRepository.delete(retornaFuncionarioSeExistir(id).get());
+        funcionarioRepository.delete(retornaFuncionarioSeExistir(id));
     }
 
     public Funcionario atualizaFuncionario(@Valid DadosFuncionario dados) {
-        Optional<Funcionario> funcionario = retornaFuncionarioSeExistir(dados.id());
-        atualizaDados(dados, funcionario.get());
-        return funcionario.get();
-    }
-
-    private Optional<Funcionario> getFuncionarioById(Long id) {
-        return funcionarioRepository.findById(id);
-    }
-
-    private void verificaSeExisteFuncionario(Optional<Funcionario> funcionario) {
-        if (funcionario.isEmpty()) {
-            throw new RuntimeException("Funcionário não existe");
-        }
-    }
-
-    private void atualizaDados(DadosFuncionario dados, Funcionario funcionario) {
+        Funcionario funcionario = retornaFuncionarioSeExistir(dados.id());
         funcionario.setNome(dados.nome());
         funcionario.setSobreNome(dados.sobreNome());
         funcionario.setEmail(dados.email());
         funcionario.setNumeroPIS(Long.parseLong(dados.numeroPIS()));
-
         funcionarioRepository.save(funcionario);
+
+        return funcionario;
     }
 
-    private Optional<Funcionario> retornaFuncionarioSeExistir(Long id) {
-        Optional<Funcionario> optionalFuncionario = getFuncionarioById(id);
-        verificaSeExisteFuncionario(optionalFuncionario);
-        return optionalFuncionario;
+    private void lancaExcecaoSeNaoExistirFuncionario(Long id) {
+        if (getFuncionarioById(id).isEmpty())
+            throw new RuntimeException("Funcionário não existe");
+    }
+
+    private Funcionario retornaFuncionarioSeExistir(Long id) {
+        lancaExcecaoSeNaoExistirFuncionario(id);
+        return funcionarioRepository.findById(id).get();
+    }
+
+    private Optional<Funcionario> getFuncionarioById(Long id) {
+        return funcionarioRepository.findById(id);
     }
 }

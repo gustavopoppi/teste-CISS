@@ -44,8 +44,8 @@ class FuncionarioControllerTest {
     private final String REQUEST_FUNCIONARIOS = "/funcionarios";
 
     @Test
-    @DisplayName("Dado requisicao listar funcionarios e tiver algum cadastrado então deve retornar status OK e todos funcionários cadastrados")
-    public void requisicaoListarFuncionariosQuandoTiverFuncionariosCadastrados() throws Exception {
+    @DisplayName("Dado requisicao listar funcionarios e tiver algum cadastrado então status deve ser OK e retornar todos funcionarios cadastrados")
+    public void dadoRequisicaoListarFuncionariosQuandoTiverFuncionariosCadastrados() throws Exception {
         Funcionario funcionario = criaFuncionario(BELTRANO);
 
         when(funcionarioRepository.findAll()).thenReturn(List.of(funcionario));
@@ -56,8 +56,8 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    @DisplayName("Dado requisicao listar funcionarios e quando não tiver nenhum cadastrado então deve retornar status OK e campos nulos")
-    public void requisicaoListarFuncionariosQuandoNaoTiverFuncionariosCadastrados() throws Exception {
+    @DisplayName("Dado requisicao listar funcionarios e quando não tiver nenhum cadastrado então status deve ser OK e campos nulos")
+    public void dadoRequisicaoListarFuncionariosQuandoNaoTiverFuncionariosCadastrados() throws Exception {
         when(funcionarioRepository.findAll()).thenReturn(List.of(new Funcionario()));
 
         MockHttpServletResponse response = this.mockMvc.perform(
@@ -79,7 +79,7 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    @DisplayName("Dado requisicao detalhar funcionarios e tiver o funcionario cadastrado então deve retornar status OK")
+    @DisplayName("Dado requisicao detalhar funcionarios e tiver o funcionario cadastrado então status deve ser OK")
     public void requisicaoDetalharFuncionarioQuandoTiverFuncionariosCadastrado() throws Exception {
         Funcionario funcionario = criaFuncionario(BELTRANO);
         funcionario.setId(1L);
@@ -91,6 +91,7 @@ class FuncionarioControllerTest {
     }
 
     @Test
+    @DisplayName("Dado requisicao de inserir funcionario entao status deve ser CREATED")
     public void quandoInserirFuncionarioEntaoDeveRetornarStatusCreated() throws Exception {
         when(funcionarioRepository.save(any())).thenReturn(criaFuncionario(BELTRANO));
 
@@ -103,7 +104,7 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    @DisplayName("Quando inserir funcionario com nome menor que dois caracteres então deve dar mensagem de status BadRequest")
+    @DisplayName("Quando inserir funcionario com nome menor que dois caracteres então status deve ser BadRequest")
     public void nomeMenorQueDoisCaracteres() throws Exception {
         when(funcionarioRepository.save(any())).thenReturn(criaFuncionario(NOME_MENOR_DOIS_CARACTERES));
 
@@ -115,7 +116,7 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    @DisplayName("Quando inserir funcionario com nome maior que trinta caracteres então deve dar mensagem de Status BadRequest")
+    @DisplayName("Quando inserir funcionario com nome maior que trinta caracteres então status deve ser BadRequest")
     public void nomeMaiorQueTrintaCaracteres() throws Exception {
         when(funcionarioRepository.save(any())).thenReturn(criaFuncionario(NOME_MAIOR_TRINTA_CARACTERES));
 
@@ -127,7 +128,7 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    @DisplayName("Quando inserir funcionario com sobrenome menor que dois caracteres então deve dar mensagem de status BadRequest")
+    @DisplayName("Quando inserir funcionario com sobrenome menor que dois caracteres então status deve ser BadRequest")
     public void sobreNomeMenorQueDoisCaracteres() throws Exception {
         when(funcionarioRepository.save(any())).thenReturn(criaFuncionario(SOBRENOME_MENOR_DOIS_CARACTERES));
 
@@ -139,7 +140,7 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    @DisplayName("Quando inserir funcionario com nome maior que cinquenta caracteres então deve dar mensagem de status BadRequest")
+    @DisplayName("Quando inserir funcionario com nome maior que cinquenta caracteres então status deve ser BadRequest")
     public void sobreNomeMaiorQueCinquentaCaracteres() throws Exception {
         when(funcionarioRepository.save(any())).thenReturn(criaFuncionario(SOBRENOME_MAIOR_CINQUENTA_CARACTERES));
 
@@ -151,7 +152,8 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    public void quandoInserirEmailInvalidoDeveDarMensagemDeStatusBadRequest() throws Exception {
+    @DisplayName("Quando inserir funcionario com email invalido entao status deve ser BadRequest")
+    public void emailInvalido() throws Exception {
         when(funcionarioRepository.save(any())).thenReturn(criaFuncionario(EMAIL_INVALIDO));
 
         this.mockMvc.perform(post(REQUEST_FUNCIONARIOS)
@@ -162,7 +164,8 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    public void dadoUmIdDeFuncionarioExistenteEntaoExcluirFuncionario() throws Exception {
+    @DisplayName("Dado um id de funcionario existente entao excluir funcionario")
+    public void excluiFuncionaioComIdExistente() throws Exception {
         Funcionario funcionario = criaFuncionario(BELTRANO);
         funcionario.setId(1L);
         when(funcionarioRepository.findById(any())).thenReturn(Optional.of(funcionario));
@@ -174,7 +177,8 @@ class FuncionarioControllerTest {
     }
 
     @Test
-    public void dadoUmIdDeFuncionarioNuloEntaoRetornarStatus400() throws Exception {
+    @DisplayName("dado um id de funcionario nulo entao retornar status BadRequest")
+    public void tentaExcluirIdFuncionarioNulo() throws Exception {
         Funcionario funcionario = criaFuncionario(BELTRANO);
         when(funcionarioRepository.findById(any())).thenReturn(Optional.of(funcionario));
 

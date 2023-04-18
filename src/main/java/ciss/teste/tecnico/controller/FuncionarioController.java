@@ -21,8 +21,7 @@ public class FuncionarioController {
 
     @GetMapping
     public ResponseEntity<List<Funcionario>> listaTodosFuncionarios(){
-        List<Funcionario> funcionarios = funcionarioService.listaFuncionarios();
-        return ResponseEntity.ok(funcionarios);
+        return ResponseEntity.ok(funcionarioService.listaFuncionarios());
     }
 
     @GetMapping("{id}")
@@ -49,7 +48,6 @@ public class FuncionarioController {
     @PutMapping
     @Transactional
     public ResponseEntity<Funcionario> atualizaFuncionario(@RequestBody @Valid DadosFuncionario dados){
-        Funcionario funcionario = funcionarioService.atualizaFuncionario(dados);
-        return ResponseEntity.ok(funcionario);
+        return ResponseEntity.ok(funcionarioService.atualizaFuncionario(dados));
     }
 }
